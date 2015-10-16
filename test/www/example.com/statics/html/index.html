@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="../css/color.css" rel="stylesheet" type="text/css" />
+<link href="../css/typography.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet/less" type="text/css" href="../css/main.css"/>
+<script type="text/javascript" src="../js/less.js"></script>
+<script type="text/javascript" src="../js/cookieUtil.js"></script>
+<script type="text/javascript" src="../js/jquery-1.9.1.js"></script>
+<title>index</title>
+</head>
+
+<body>
+	<div id="container">
+    	<nav class="header border no-border no-margin no-padding">
+        	<ul>
+            	<li><a href="login.html">用户登录</a></li>
+                <li><a href="javascript:void(0)">用户注册</a></li>
+                <li><a href="javascript:void(0)">退出登录</a></li>
+                <li><a href="author.html">关于作者</a></li>
+            </ul>	
+            <span class="sp2">北京林业大学计算机09-3谢天昕</span>
+        </nav><!--end nav-->
+        <div style="clear:both"></div>
+        <div class="main border">
+        	<div class="wel" id="wel">欢迎您</div>
+        	<div class="row-fluid">
+        		<div class="span8 border">
+        			<ul id="slide">			
+						<li><img src="images/banner_01.jpg" alt="xtx"/></li>
+						<li><img src="images/banner_02.jpg" alt="xtx"/></li>
+						<li><img src="images/banner_03.jpg" alt="xtx"/></li>
+			            <li><img src="images/banner_04.jpg" alt="xtx"/></li>
+			     	 </ul>
+        		</div>
+        		<div class="span4 border">
+        			<img src="images/kenan.jpg"></img>
+        			<p>姓名：江户川柯南</p>
+        			<p>性别：男</p>
+        			<p>出生地：东京</p>
+        		</div>
+        	</div>
+        	<div class="row-fluid person">
+        		<div class="span8 border">
+        		<div class="pic">
+        		个人简介:
+        		</div>
+            	<div id="pic1">
+            	请修改相关信息
+            	</div>
+				<div id="change" class="pull-right">
+				修改相关信息
+				</div>
+        		</div>
+        		<div class="span4 border">
+        			<input type="checkbox" id="bolder"/><label for="bolder" class="index-label">加粗</label>
+        			<input type="checkbox" id="pull"/><label for="pull" class="index-label">倾斜</label>
+        			<input type="checkbox" id="ahref"/><label for="ahref" class="index-label">链接</label>
+        			<a class="index-label" id="retry" href="#">还原</a>
+        		</div>
+        	</div>
+        </div><!--end main-->
+        <footer class="footer">
+        	<div class="copyright-left"></div>
+			<div class="copyright-center">
+                <div class="leftcopyrightmenu">
+                  <div>
+                        <ul>
+                            <a href="index.html"><li><u>网站首页</u></li></a>
+                            <a href="company.html"><li><u>使用条款</u></li></a>
+                            <a href="company.html"><li><u>隐私保护</u></li></a>
+                            <a href="company.html"><li><u>免责条款</u></li></a>
+                            <a href="company.html"><li><u>版权信息</u></li></a>
+                            <a href="author.html"><li><u>联系我们</u></li></a>
+                        </ul>
+                  </div>
+                </div>
+			</div>
+		<div class="copyright-right"></div>
+        </footer>
+    </div>
+</body>
+</html>
+<script type="text/javascript">
+// JavaScript Document
+(function checkUser(){
+	if(getCookie('user')==null){
+		alert('您尚未登录!');
+		//window.location.href='login.html';
+		}else{
+			return true;
+			}
+	})();
+function getUser(){
+var a=getCookie('user');
+var b=document.getElementById('wel');
+var c=getCookie('content');
+var d=document.getElementById('pic1');
+if(a==null){
+	b.innerHTML+='游客';
+	}else{
+	b.innerHTML+=a;
+	/*var span=document.createElement('span');
+	span.innerHTML='退出登录';
+	span.setAttribute('class','span1');
+	b.appendChild(span);*/
+	}
+
+if(c==null){
+	d.innerHTML='请修改相关信息';
+	}else{
+	d.innerHTML=c;
+	setCookie('content',c);
+	}
+}
+/*(function($){
+	var a=$('.span1').eq(0);
+	a.on('click',function(){
+	deleteCookie('user');
+	alert(1);
+	});
+	})(jQuery);*/
+(function($){
+	var a=$('.header ul li');
+	var b=a.eq(2);
+	var c=a.eq(1);
+	var d=$('#change');
+	var e=document.getElementById('pic1').innerHTML;
+	b.on('click',function(){
+		if(checkUser()==true){
+			deleteCookie('user');
+			//window.location.href='index.html';
+			}
+	});
+	c.on('click',function(){
+		if(getCookie('user')!=null){
+			alert('您已经登录');
+			}else{
+				window.location.href='register.html';
+				}
+		});
+	d.on('click',function(){
+		setCookie('content',e);
+		window.location.href='change1.html';
+		});
+	})(jQuery);
+(function($){
+	var a=$('#slide li');
+	var j=0;
+	var b;
+	a.eq(0).css('display','block');
+	b=setInterval(function(){
+		show1();
+	},5000);
+	$('#slide').mouseover(function(){
+		clearInterval(b);
+		});
+	$('#slide').mouseout(function(){
+		b=setInterval(function(){
+		show1();
+	},5000);
+		});	
+	function show1(){
+		for(var k=0;k<a.length;k++){
+			a.eq(k).css('display','none');
+			}
+		a.eq(j).css('display','block');
+		j=j+1;
+		if(j==a.length) {j=0;}
+		}	
+})(jQuery);
+(function($){
+	var bold=$('#bolder')
+	,	pull=$('#pull')
+	,	ahref=$('#ahref')
+	,	text=$('#pic1').html()
+	,	retry=$('#retry')
+	,	word;
+	bold.on('change',function(){
+		text=$('#pic1').html();
+		word=window.getSelection ? window.getSelection() : document.selection.createRange();	
+		var ch=text.split(word);
+			var words=ch[0]+'<b>'+word+'</b>'+ch[1];
+			$('#pic1').html(words);
+	});
+	pull.on('change',function(){	
+		text=$('#pic1').html();
+		word=window.getSelection ? window.getSelection() : document.selection.createRange();
+		var ch=text.split(word);
+			var words=ch[0]+'<i>'+word+'</i>'+ch[1];
+			$('#pic1').html(words);
+	});
+	ahref.on('change',function(){
+		text=$('#pic1').html();
+		word=window.getSelection ? window.getSelection() : document.selection.createRange();	
+		var ch=text.split(word);
+			var words=ch[0]+'<a>'+word+'</a>'+ch[1];
+			$('#pic1').html(words);
+	});
+	retry.on('click',function(e){
+		e.preventDefault();
+		$('#pic1').html(text);
+	});
+})(jQuery);
+window.onbeforeonload=getUser();
+</script>
