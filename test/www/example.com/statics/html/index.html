@@ -127,6 +127,14 @@ if(c==null){
 	var c=a.eq(1);
 	var d=$('#change');
 	var e=document.getElementById('pic1').innerHTML;
+	$.ajax({
+		url:'http://example.com/ajax/test',
+		data:{a:1},
+		method:'get',
+		success:function(data){
+			console.log(data)
+		}
+	})
 	b.on('click',function(){
 		if(checkUser()==true){
 			deleteCookie('user');

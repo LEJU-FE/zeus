@@ -1,4 +1,3 @@
-console.time('[Start]');
 global.Http = require('http');
 global.controller = require('./controller/controller.js');
 global.absolutePath = '/Users/xtx/Desktop/workspace/zeus';
@@ -6,6 +5,9 @@ var Url=require('url');
 var fs = require('fs');
 var Path = require('path');
 var querystring = require("querystring");
+var logger = require("./log").helper;
+var args = process.argv.slice(2);
+var port = (args[0] && /^\d+$/.test(args[0])) ? parseInt(args[0]) : 3000;
 var Webser = function(req,res){
 	var reqUrl = req.url; 
 	var pathName = Url.parse(reqUrl).pathname;
@@ -44,6 +46,7 @@ var Webser = function(req,res){
 		}
 		var statics = absolutePath+'/test/www/'+hostName+'/statics/' + suffixType + pathName.replace(/\/?.+\//ig,'/');
 		if (fs.existsSync(statics)) {
+			logger.writeInfo('guest request:'+req.headers['x-forwarded-for']||req.connection.remoteAddress+' , '+statics+' , '+req.method)
 			fs.readFile(statics,function(err,content){
 				if(err){
 					res.writeHead(404,{
@@ -70,7 +73,6 @@ var Webser = function(req,res){
 	var route = pn[1];
 	if(req.method == 'GET'){
 		var getdata=Url.parse(reqUrl,true).query||'';
-		console.log(getdata)
 		mainRander(getdata)
 	}else if(req.method == 'POST'){
 		var postdata = '';
@@ -85,12 +87,22 @@ var Webser = function(req,res){
 		mainRander(getdata)
 	}
 	function mainRander(getdata){
+		if(controllerPath=='ajax'){
+			var re = require(absolutePath+'/test/www/'+hostName+'/controller/'+controllerPath+'.js');
+			var newObj = re._create();
+			newObj.res = res;
+			newObj.req = req;
+			logger.writeDebug('the ajax path:'+route)
+			var data = newObj[route](route,JSON.stringify(getdata));
+			return false;
+		}
 		if(controllerPath&&route){
 			var re = require(absolutePath+'/test/www/'+hostName+'/controller/'+controllerPath+'.js');
 			var newObj = re._create();
 			newObj.res = res;
 			newObj.req = req;
 			newObj[route](route,getdata)
+			logger.writeDebug('the page path:'+controllerPath)
 		}else{
 			var re = require(absolutePath+'/test/www/'+hostName+'/controller/index.js')
 			var newObj = re._create();
@@ -98,6 +110,7 @@ var Webser = function(req,res){
 			newObj.req = req;
 			route=controllerPath||'index'
 			newObj[route](route,getdata)
+			logger.writeDebug('the index page path:'+hostName)
 		}
 	}
 }
@@ -105,7 +118,6 @@ var server = Http.createServer(Webser)
 server.on("error", function(error) { 
 	console.log(error);
 }); 
-server.listen(3000,function(){
+server.listen(port,function(){
 	console.log('fuck node'); 
-	console.timeEnd('[Start]');
 });

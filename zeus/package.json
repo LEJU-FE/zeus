@@ -1,6 +1,6 @@
 {
   "name": "zeus",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "mvc node struct",
   "main": "index.js",
   "repository": {
@@ -14,10 +14,11 @@
     "mvc"
   ],
   "dependencies": {
-    "express": "4.x",
     "mkdirp":"^0.5.1",
     "ejs":">=2.3.0",
-    "socket.io":"latest"  
+    "request":"latest" ,
+    "q":"latest",
+    "log4js":">=0.6.6"   
   },
   "devDependencies": {
     "karma": "~0.13",
